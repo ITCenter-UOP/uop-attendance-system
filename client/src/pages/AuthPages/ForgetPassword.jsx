@@ -6,10 +6,9 @@ import Toast from '../../component/Toast/Toast';
 import useForm from '../../hooks/useForm';
 import uoplogo from '../../assets/uoplogo.png'
 
-const Login = () => {
+const ForgetPassword = () => {
     const { values, handleChange } = useForm({
         email: '',
-        password: '',
     });
 
     const [toast, setToast] = useState(null);
@@ -68,10 +67,10 @@ const Login = () => {
                         </center>
                     </div>
                     <h1 className="text-4xl font-bold text-gray-800 text-center mb-2">
-                        Welcome Back
+                        Forget Password
                     </h1>
                     <p className="text-gray-500 text-center mb-8">
-                        Please log in to continue to your dashboard.
+                        Enter Email Address to Reqeust Password Reset OTP
                     </p>
 
                     <form onSubmit={handleLogin}>
@@ -84,38 +83,12 @@ const Login = () => {
                             placeholder="Enter your email"
                             required
                         />
-
-                        <DefaultInput
-                            label="Password"
-                            type="password"
-                            name="password"
-                            value={values.password}
-                            onChange={handleChange}
-                            placeholder="Enter your password"
-                            required
-                        />
-
-                        <div className="flex items-center justify-between mb-6">
-                            <label className="flex items-center text-sm text-gray-600">
-                            </label>
-                            <a href="/forget-password" className="text-sm text-[#560606] hover:underline">
-                                Forgot password?
-                            </a>
-                        </div>
-
-                        <DefaultButton label="Login" type="submit" />
+                        <DefaultButton label="Request Password Reset OTP" type="submit" />
                     </form>
-
-                    <p className="text-center text-sm text-gray-600 mt-8">
-                        Don’t have an account?{' '}
-                        <a href="/create-account" className="text-[#560606] font-semibold hover:underline">
-                            Create one
-                        </a>
-                    </p>
                 </div>
             </div>
         </div>
     );
 };
 
-export default Login;
+export default ForgetPassword;
