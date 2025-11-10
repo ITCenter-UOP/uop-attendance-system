@@ -73,7 +73,7 @@ const Login = () => {
                             <h2 className="font-bold ">Information Technology Centre </h2>
                         </center>
                     </div>
-                    <h1 className="text-4xl font-bold text-gray-800 text-center mb-2">
+                    <h1 className="md:text-4xl font-bold text-gray-800 text-center mb-2">
                         Welcome to Attendance Management System
                     </h1>
                     <p className="text-gray-500 text-center mb-8">
