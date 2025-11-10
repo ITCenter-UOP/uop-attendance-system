@@ -8,6 +8,7 @@ import uoplogo from '../../assets/uoplogo.png'
 
 const Login = () => {
     const { values, handleChange } = useForm({
+        username: '',
         email: '',
         password: '',
     });
@@ -73,13 +74,23 @@ const Login = () => {
                         </center>
                     </div>
                     <h1 className="text-4xl font-bold text-gray-800 text-center mb-2">
-                        Welcome Back
+                        Welcome to Attendance Management System
                     </h1>
                     <p className="text-gray-500 text-center mb-8">
                         Please log in to continue to your dashboard.
                     </p>
 
                     <form onSubmit={handleLogin}>
+                        <DefaultInput
+                            label="Username"
+                            type="text"
+                            name="username"
+                            value={values.username}
+                            onChange={handleChange}
+                            placeholder="Enter your username"
+                            required
+                        />
+
                         <DefaultInput
                             label="Email"
                             type="email"
@@ -100,21 +111,13 @@ const Login = () => {
                             required
                         />
 
-                        <div className="flex items-center justify-between mb-6">
-                            <label className="flex items-center text-sm text-gray-600">
-                            </label>
-                            <a href="/forgot-password" className="text-sm text-[#560606] hover:underline">
-                                Forgot password?
-                            </a>
-                        </div>
-
-                        <DefaultButton label="Login" type="submit" />
+                        <DefaultButton label="Create New Account" type="submit" />
                     </form>
 
                     <p className="text-center text-sm text-gray-600 mt-8">
-                        Don’t have an account?{' '}
-                        <a href="/create-account" className="text-[#560606] font-semibold hover:underline">
-                            Create one
+                        Already have an account?{' '}
+                        <a href="/" className="text-[#560606] font-semibold hover:underline">
+                            SignIn
                         </a>
                     </p>
                 </div>
