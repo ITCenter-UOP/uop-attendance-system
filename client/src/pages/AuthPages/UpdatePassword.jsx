@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 
-const VerifyEmail = () => {
+const UpdatePassword = () => {
     const token = localStorage.getItem('emailverify')
     const navigate = useNavigate();
     const { verifyEmailInfo, handleEmailVerificationToken } = useAuth()
@@ -32,7 +32,8 @@ const VerifyEmail = () => {
     }, [verifyEmailInfo, token, handleEmailVerificationToken, navigate]);
 
     const { values, handleChange } = useForm({
-        otp: '',
+        newpass: '',
+        newpassword: '',
     });
 
     const [toast, setToast] = useState(null);
@@ -91,23 +92,35 @@ const VerifyEmail = () => {
                         </center>
                     </div>
                     <h1 className="text-4xl font-bold text-gray-800 text-center mb-2">
-                        Verify Account
+                        Update Password
                     </h1>
                     <p className="text-gray-500 text-center mb-8">
-                        Verify Your Account Here (The OTP is Already send to your email when your registaion)
+                        Update Your Password with New One
                     </p>
 
                     <form onSubmit={headleSubmit}>
                         <DefaultInput
-                            label="One Time Password (OTP)"
-                            type="text"
-                            name="otp"
-                            value={values.otp}
+                            label="New Password"
+                            type="password"
+                            name="newpass"
+                            value={values.newpass}
                             onChange={handleChange}
                             placeholder="Enter your OTP"
                             required
                         />
-                        <DefaultButton label="Verify Account" type="submit" />
+
+                        <DefaultInput
+                            label="Confirm New Password"
+                            type="password"
+                            name="newpass"
+                            value={values.newpassword}
+                            onChange={handleChange}
+                            placeholder="Confirm Your Password"
+                            required
+                        />
+
+
+                        <DefaultButton label="Update Password" type="submit" />
                     </form>
                 </div>
             </div>
@@ -115,4 +128,4 @@ const VerifyEmail = () => {
     );
 };
 
-export default VerifyEmail;
+export default UpdatePassword;

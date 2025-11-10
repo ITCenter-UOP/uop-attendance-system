@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 
-const VerifyEmail = () => {
+const VerifyOTP = () => {
     const token = localStorage.getItem('emailverify')
     const navigate = useNavigate();
     const { verifyEmailInfo, handleEmailVerificationToken } = useAuth()
@@ -91,10 +91,10 @@ const VerifyEmail = () => {
                         </center>
                     </div>
                     <h1 className="text-4xl font-bold text-gray-800 text-center mb-2">
-                        Verify Account
+                        Verify One Time Password
                     </h1>
                     <p className="text-gray-500 text-center mb-8">
-                        Verify Your Account Here (The OTP is Already send to your email when your registaion)
+                        Verify Your OTP Here (OTP already send to your email when you reqeustion Password Reset)
                     </p>
 
                     <form onSubmit={headleSubmit}>
@@ -107,7 +107,7 @@ const VerifyEmail = () => {
                             placeholder="Enter your OTP"
                             required
                         />
-                        <DefaultButton label="Verify Account" type="submit" />
+                        <DefaultButton label="Verify OTP" type="submit" />
                     </form>
                 </div>
             </div>
@@ -115,4 +115,4 @@ const VerifyEmail = () => {
     );
 };
 
-export default VerifyEmail;
+export default VerifyOTP;

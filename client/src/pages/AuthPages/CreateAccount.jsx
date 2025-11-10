@@ -15,7 +15,7 @@ const Login = () => {
 
     const [toast, setToast] = useState(null);
 
-    const handleLogin = (e) => {
+    const headleSubmit = (e) => {
         e.preventDefault();
 
         if (values.email === 'admin@demo.com' && values.password === '123456') {
@@ -80,7 +80,7 @@ const Login = () => {
                         Please log in to continue to your dashboard.
                     </p>
 
-                    <form onSubmit={handleLogin}>
+                    <form onSubmit={headleSubmit}>
                         <DefaultInput
                             label="Username"
                             type="text"

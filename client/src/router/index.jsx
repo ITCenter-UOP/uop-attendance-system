@@ -5,6 +5,8 @@ import Login from '../pages/AuthPages/Login'
 import CreateAccount from '../pages/AuthPages/CreateAccount'
 import ForgetPassword from '../pages/AuthPages/ForgetPassword'
 import VerifyEmail from '../pages/AuthPages/VerifyEmail'
+import VerifyOTP from '../pages/AuthPages/VerifyOTP'
+import UpdatePassword from '../pages/AuthPages/UpdatePassword'
 
 
 function App() {
@@ -18,6 +20,10 @@ function App() {
                     <Route path='create-account' element={<CreateAccount /> } />
                     <Route path='forget-password' element={<ForgetPassword /> } />
                     <Route path='verify-account' element={<VerifyEmail /> } />
+                    <Route path='verify-otp' element={<VerifyOTP /> } />
+                    <Route path='update-password' element={<UpdatePassword /> } />
+                
+
                     {/* <Route path='create-account' element={<CreateAccount />} />
                     <Route path='verify-email' element={<VerifyEmail />} />
                     <Route path='login' element={<Login />} />
