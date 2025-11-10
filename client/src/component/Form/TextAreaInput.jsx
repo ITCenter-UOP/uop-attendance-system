@@ -12,7 +12,10 @@ const TextAreaInput = ({
     return (
         <div className="mb-5">
             {label && (
-                <label htmlFor={name} className="block text-sm font-semibold text-gray-700 mb-2">
+                <label
+                    htmlFor={name}
+                    className="block text-sm font-semibold text-[#560606] mb-2"
+                >
                     {label}
                 </label>
             )}
@@ -24,9 +27,10 @@ const TextAreaInput = ({
                 onChange={onChange}
                 required={required}
                 placeholder={placeholder}
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white/50 text-gray-900 
-                           placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 
-                           focus:ring-purple-400 transition duration-200 resize-none"
+                className="w-full px-4 py-3 rounded-xl border border-[#e0bcbc] bg-white text-gray-900 
+                           placeholder-gray-400 focus:outline-none focus:border-[#560606] 
+                           focus:ring-2 focus:ring-[#560606]/40 transition-all duration-200 
+                           resize-none shadow-sm hover:shadow-md"
             />
         </div>
     );
