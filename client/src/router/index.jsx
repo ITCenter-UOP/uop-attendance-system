@@ -4,6 +4,7 @@ import DefultError from '../component/Errors/DefultError'
 import Login from '../pages/AuthPages/Login'
 import CreateAccount from '../pages/AuthPages/CreateAccount'
 import ForgetPassword from '../pages/AuthPages/ForgetPassword'
+import VerifyEmail from '../pages/AuthPages/VerifyEmail'
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
                     <Route index element={<Login />} /> 
                     <Route path='create-account' element={<CreateAccount /> } />
                     <Route path='forget-password' element={<ForgetPassword /> } />
+                    <Route path='verify-account' element={<VerifyEmail /> } />
                     {/* <Route path='create-account' element={<CreateAccount />} />
                     <Route path='verify-email' element={<VerifyEmail />} />
                     <Route path='login' element={<Login />} />
