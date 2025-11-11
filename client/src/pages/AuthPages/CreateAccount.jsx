@@ -5,42 +5,59 @@ import DefaultButton from '../../component/Buttons/DefaultButton';
 import Toast from '../../component/Toast/Toast';
 import useForm from '../../hooks/useForm';
 import uoplogo from '../../assets/uoplogo.png'
+import API from '../../services/api';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
-const Login = () => {
+const CreateAccount = () => {
+    const navigate = useNavigate()
+    const { handleEmailVerificationToken } = useAuth();
+    const [ Loading, setLoading ] = useState()
+
     const { values, handleChange } = useForm({
         username: '',
         email: '',
         password: '',
     });
 
+
     const [toast, setToast] = useState(null);
 
-    const headleSubmit = (e) => {
+    const headleSubmit = async (e) => {
         e.preventDefault();
 
-        if (values.email === 'admin@demo.com' && values.password === '123456') {
-            setToast({ success: true, message: 'Login successful!' });
-        } else {
-            setToast({ success: false, message: 'Invalid credentials. Try again!' });
+        try {
+            const res = await API.post('/auth/registation', values, {
+                headers: { "Content-Type": "application/json" },
+            });
+
+            if (res.data.success === true) {
+                setToast(true, res.data.message);
+                handleEmailVerificationToken(res.data.token);
+                setTimeout(() => navigate('/verify-email'), 2000);
+            } else {
+                setToast(false, res.data.message);
+            }
+        } catch (err) {
+            const message =
+                err.response?.data?.message || "Request failed. Please try again.";
+            setToast(false, message);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div className="min-h-screen flex flex-col md:flex-row">
-            {/* Left side image with dark gradient */}
             <div className="relative hidden md:flex md:w-1/2">
                 <img
                     src={ICTCenterImg}
                     alt="ICT Center"
                     className="object-cover w-full h-full"
                 />
-                {/* Dark gradient overlay */}
-                {/* <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"></div> */}
+
                 <div className="absolute inset-0 bg-black/70"></div>
 
-
-
-                {/* Optional overlay text */}
                 <div className="absolute bottom-10 left-10 text-white">
                     <img src={uoplogo} alt="" className='h-16 w-auto' />
 
@@ -52,9 +69,9 @@ const Login = () => {
                 </div>
             </div>
 
-            {/* Right side form section */}
+
             <div className="flex flex-col justify-center items-center w-full md:w-1/2 px-8 py-16 bg-white">
-                {/* Toast Message */}
+
                 <div className="absolute top-5 right-5 z-50">
                     {toast && (
                         <Toast
@@ -126,4 +143,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default CreateAccount;
