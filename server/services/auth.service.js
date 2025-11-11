@@ -245,47 +245,55 @@ class AuthService {
             const FRONTEND_URL = process.env.FRONTEND_URL;
 
             await sendEmail({
-                to: user.email,
-                subject: "Login Successful | Psychological Wellbeing & Assessment Center",
+                to: email,
+                subject: "Login Successful | Attendance Management System | ICT Center, University of Peradeniya",
                 html: `
-        <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f7f7f7; padding: 40px 0;">
-            <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 14px; overflow: hidden; box-shadow: 0 10px 35px rgba(0,0,0,0.08);">
-                
-                <!-- Header -->
-                <div style="background: #560606; padding: 28px; text-align: center;">
-                    <h1 style="color: #fff; margin: 0; font-size: 26px; font-weight: 800;">Login Successful ✅</h1>
-                    <p style="color: #ffd6d6; margin: 6px 0 0; font-size: 15px;">Welcome back, ${user.username}</p>
-                </div>
+                    <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f7f7f7; padding: 40px 0;">
+                        <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 14px; overflow: hidden; box-shadow: 0 10px 35px rgba(0,0,0,0.08);">
+                            
+                            <!-- Header -->
+                            <div style="background: #560606; padding: 25px; text-align: center;">
+                                <h1 style="color: #fff; margin: 0; font-size: 28px; font-weight: 800;">Login Successful ✅</h1>
+                                <p style="color: #ffd6d6; margin: 6px 0 0; font-size: 15px;">Attendance Management System | ICT Center</p>
+                            </div>
 
-                <!-- Body -->
-                <div style="padding: 35px; color: #333;">
-                    <p style="font-size: 17px; line-height: 1.7; color: #374151; margin-bottom: 22px;">
-                        👋 Hello <strong>${user.username}</strong>, your login was successful.  
-                        If this was you — everything is fine.
-                    </p>
+                            <!-- Body -->
+                            <div style="padding: 35px; color: #333;">
+                                <h2 style="font-size: 22px; margin-bottom: 12px; color: #560606;">Hello ${user.username},</h2>
 
-                    <div style="background: #560606; color: #fff; border-radius: 10px; padding: 18px 22px; margin: 25px 0;">
-                        <h3 style="margin: 0 0 12px; font-size: 18px;">🔍 Login Details</h3>
-                        <p style="margin: 4px 0; font-size: 15px;"><strong>📅 Time:</strong> ${metadata.timestamp}</p>
-                        <p style="margin: 4px 0; font-size: 15px;"><strong>💻 Device:</strong> ${metadata.userAgent}</p>
-                        <p style="margin: 4px 0; font-size: 15px;"><strong>🌐 IP Address:</strong> ${metadata.ipAddress}</p>
+                                <p style="font-size: 16px; line-height: 1.6; margin-bottom: 20px; color: #4b5563;">
+                                    👋 You have successfully logged into the <strong>Attendance Management System</strong> at ICT Center, University of Peradeniya. 
+                                    If this was you, everything is fine. Otherwise, please review your account security.
+                                </p>
+
+                                <div style="background: #560606; color: #fff; border-radius: 12px; padding: 18px 22px; margin: 25px 0;">
+                                    <h3 style="margin: 0 0 12px; font-size: 18px;">🔍 Login Details</h3>
+                                    <p style="margin: 4px 0; font-size: 15px;"><strong>📅 Time:</strong> ${metadata.timestamp}</p>
+                                    <p style="margin: 4px 0; font-size: 15px;"><strong>💻 Device:</strong> ${metadata.userAgent}</p>
+                                    <p style="margin: 4px 0; font-size: 15px;"><strong>🌐 IP Address:</strong> ${metadata.ipAddress}</p>
+                                </div>
+
+                                <p style="font-size: 15px; color: #6b7280;">
+                                    ⏳ Keep your account secure and do not share your login details.
+                                </p>
+
+                                <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;"/>
+
+                                <p style="font-size: 15px; color: #475569;">
+                                    💚 Access your Attendance Management System dashboard and resources securely.
+                                </p>
+                            </div>
+
+                            <!-- Footer -->
+                            <div style="background-color: #f9fafb; padding: 20px; text-align: center; font-size: 13px; color: #9ca3af;">
+                                <p style="margin: 5px 0;">© ${new Date().getFullYear()} Attendance Management System</p>
+                                <p style="margin: 0;">ICT Center, University of Peradeniya</p>
+                            </div>
+                        </div>
                     </div>
-
-                    <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;" />
-                    <p style="font-size: 15px; color: #475569;">
-                        💚 Stay safe and access resources at the Psychological Wellbeing & Assessment Center.
-                    </p>
-                </div>
-
-                <!-- Footer -->
-                <div style="background-color: #f9fafb; padding: 20px; text-align: center; font-size: 13px; color: #9ca3af;">
-                    <p style="margin: 5px 0;">© ${new Date().getFullYear()} Psychological Wellbeing & Assessment Center</p>
-                    <p style="margin: 0;">University of Peradeniya</p>
-                </div>
-            </div>
-        </div>
-    `,
+                    `,
             });
+
 
         }
 
@@ -349,49 +357,54 @@ class AuthService {
 
         await sendEmail({
             to: email,
-            subject: "Password Reset Request | Psychological Wellbeing & Assessment Center",
+            subject: "Password Reset Request | Attendance Management System | ICT Center, University of Peradeniya",
             html: `
-        <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f7f7f7; padding: 40px 0;">
-            <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.08);">
-                
-                <!-- Header -->
-                <div style="background: #560606; padding: 28px; text-align: center;">
-                    <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 800;">Psychological Wellbeing & Assessment Center</h1>
-                    <p style="color: #ffd6d6; margin: 6px 0 0; font-size: 15px;">University of Peradeniya</p>
-                </div>
-
-                <!-- Body -->
-                <div style="padding: 35px; color: #333;">
-                    <h2 style="font-size: 22px; margin-bottom: 12px; color: #560606;">Hello ${existinguser.username},</h2>
-
-                    <p style="font-size: 16px; line-height: 1.7; margin-bottom: 20px; color: #4b5563;">
-                        We received a request to reset your password. Use the OTP below to securely continue:
-                    </p>
-
-                    <div style="font-size: 32px; font-weight: 800; letter-spacing: 6px; color: #fff; background: #560606; padding: 20px; text-align: center; border-radius: 12px; margin: 35px 0;">
-                        ${otp}
+            <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f7f7f7; padding: 40px 0;">
+                <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.08);">
+                    
+                    <!-- Header -->
+                    <div style="background: #560606; padding: 28px; text-align: center;">
+                        <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 800;">Attendance Management System</h1>
+                        <p style="color: #ffd6d6; margin: 6px 0 0; font-size: 15px;">ICT Center, University of Peradeniya</p>
                     </div>
 
-                    <p style="font-size: 15px; color: #6b7280;">
-                        ⏳ This OTP is valid for <strong>10 minutes</strong>. Do not share it.
-                    </p>
+                    <!-- Body -->
+                    <div style="padding: 35px; color: #333;">
+                        <h2 style="font-size: 22px; margin-bottom: 12px; color: #560606;">Hello ${existinguser.username},</h2>
 
-                    <p style="font-size: 15px; color: #6b7280;">
-                        If you didn’t request this, ignore this email.
-                    </p>
+                        <p style="font-size: 16px; line-height: 1.7; margin-bottom: 20px; color: #4b5563;">
+                            We received a request to reset your password for the <strong>Attendance Management System</strong>. Use the OTP below to securely continue:
+                        </p>
 
-                    <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 35px 0;" />
-                </div>
+                        <div style="font-size: 32px; font-weight: 800; letter-spacing: 6px; color: #fff; background: #560606; padding: 20px; text-align: center; border-radius: 12px; margin: 35px 0;">
+                            ${otp}
+                        </div>
 
-                <!-- Footer -->
-                <div style="background-color: #f9fafb; padding: 22px; text-align: center; font-size: 13px; color: #9ca3af;">
-                    <p style="margin: 5px 0;">© ${new Date().getFullYear()} Psychological Wellbeing & Assessment Center</p>
-                    <p style="margin: 0;">University of Peradeniya</p>
+                        <p style="font-size: 15px; color: #6b7280;">
+                            ⏳ This OTP is valid for <strong>10 minutes</strong>. Keep it secure and do not share it.
+                        </p>
+
+                        <p style="font-size: 15px; color: #6b7280;">
+                            If you didn’t request this, you can safely ignore this email.
+                        </p>
+
+                        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 35px 0;" />
+                        
+                        <p style="font-size: 15px; color: #475569;">
+                            💚 Once verified, you can securely access your Attendance Management System account and resources.
+                        </p>
+                    </div>
+
+                    <!-- Footer -->
+                    <div style="background-color: #f9fafb; padding: 22px; text-align: center; font-size: 13px; color: #9ca3af;">
+                        <p style="margin: 5px 0;">© ${new Date().getFullYear()} Attendance Management System</p>
+                        <p style="margin: 0;">ICT Center, University of Peradeniya</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    `,
+            `,
         });
+
 
 
 
@@ -501,50 +514,54 @@ class AuthService {
                 const FRONTEND_URL = process.env.FRONTEND_URL;
                 await sendEmail({
                     to: user.email,
-                    subject: "✅ Password Updated Successfully | Psychological Wellbeing & Assessment Center",
+                    subject: "✅ Password Updated Successfully | Attendance Management System | ICT Center, University of Peradeniya",
                     html: `
-                        <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f7f7f7; padding: 40px 0;">
-                            <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.08);">
-                                
-                                <!-- Header -->
-                                <div style="background: #560606; padding: 28px; text-align: center;">
-                                    <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 800;">Psychological Wellbeing & Assessment Center</h1>
-                                    <p style="color: #ffd6d6; margin: 6px 0 0; font-size: 15px;">University of Peradeniya</p>
-                                </div>
-
-                                <!-- Body -->
-                                <div style="padding: 35px; color: #333; text-align: center;">
-                                    <div style="font-size: 50px; color: #560606; margin-bottom: 10px;">🔐</div>
-                                    <h2 style="font-size: 22px; margin-bottom: 12px; color: #560606;">Password Updated Successfully</h2>
-
-                                    <p style="font-size: 16px; line-height: 1.7; margin-bottom: 25px; color: #4b5563;">
-                                        Hello <strong>${user.username}</strong>,<br>
-                                        Your password for <strong>Psychological Wellbeing & Assessment Center</strong> account has been updated successfully.  
-                                        You can now log in with your new password.
-                                    </p>
-
-                                    <a href='${FRONTEND_URL}/login' 
-                                        style="display: inline-block; padding: 14px 26px; background: #560606;
-                                        color: #fff; font-size: 15px; font-weight: 600; text-decoration: none; border-radius: 10px;
-                                        box-shadow: 0 4px 10px rgba(86,6,6,0.3); transition: background 0.3s;">
-                                        🔑 Go to Login
-                                    </a>
-
-                                    <p style="font-size: 15px; color: #6b7280; margin-top: 30px;">
-                                        If you didn’t make this change, please reset your password immediately or contact our support team.
-                                    </p>
-
-                                    <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 35px 0;" />
-                                </div>
-
-                                <!-- Footer -->
-                                <div style="background-color: #f9fafb; padding: 22px; text-align: center; font-size: 13px; color: #9ca3af;">
-                                    <p style="margin: 5px 0;">© ${new Date().getFullYear()} Psychological Wellbeing & Assessment Center</p>
-                                    <p style="margin: 0;">University of Peradeniya</p>
-                                </div>
-                            </div>
+                <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f7f7f7; padding: 40px 0;">
+                    <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.08);">
+                        
+                        <!-- Header -->
+                        <div style="background: #560606; padding: 28px; text-align: center;">
+                            <h1 style="color: #ffffff; margin: 0; font-size: 26px; font-weight: 800;">Attendance Management System</h1>
+                            <p style="color: #ffd6d6; margin: 6px 0 0; font-size: 15px;">ICT Center, University of Peradeniya</p>
                         </div>
-                    `,
+
+                        <!-- Body -->
+                        <div style="padding: 35px; color: #333; text-align: center;">
+                            <div style="font-size: 50px; color: #560606; margin-bottom: 10px;">🔐</div>
+                            <h2 style="font-size: 22px; margin-bottom: 12px; color: #560606;">Password Updated Successfully</h2>
+
+                            <p style="font-size: 16px; line-height: 1.7; margin-bottom: 25px; color: #4b5563;">
+                                Hello <strong>${user.username}</strong>,<br>
+                                Your password for your <strong>Attendance Management System</strong> account has been updated successfully.  
+                                You can now log in with your new password.
+                            </p>
+
+                            <a href='${FRONTEND_URL}/login' 
+                                style="display: inline-block; padding: 14px 26px; background: #560606;
+                                color: #fff; font-size: 15px; font-weight: 600; text-decoration: none; border-radius: 10px;
+                                box-shadow: 0 4px 10px rgba(86,6,6,0.3); transition: background 0.3s;">
+                                🔑 Go to Login
+                            </a>
+
+                            <p style="font-size: 15px; color: #6b7280; margin-top: 30px;">
+                                If you didn’t make this change, please reset your password immediately or contact our support team.
+                            </p>
+
+                            <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 35px 0;" />
+                            
+                            <p style="font-size: 15px; color: #475569;">
+                                💚 Access your Attendance Management System account securely.
+                            </p>
+                        </div>
+
+                        <!-- Footer -->
+                        <div style="background-color: #f9fafb; padding: 22px; text-align: center; font-size: 13px; color: #9ca3af;">
+                            <p style="margin: 5px 0;">© ${new Date().getFullYear()} Attendance Management System</p>
+                            <p style="margin: 0;">ICT Center, University of Peradeniya</p>
+                        </div>
+                    </div>
+                </div>
+                `,
                 });
 
             }

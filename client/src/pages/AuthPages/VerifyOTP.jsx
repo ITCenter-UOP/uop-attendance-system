@@ -4,15 +4,26 @@ import DefaultInput from '../../component/Form/DefaultInput';
 import DefaultButton from '../../component/Buttons/DefaultButton';
 import Toast from '../../component/Toast/Toast';
 import useForm from '../../hooks/useForm';
-import uoplogo from '../../assets/uoplogo.png'
+import uoplogo from '../../assets/uoplogo.png';
+import API from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-
 const VerifyOTP = () => {
-    const token = localStorage.getItem('emailverify')
+    const token = localStorage.getItem('emailverify');
     const navigate = useNavigate();
-    const { verifyEmailInfo, handleEmailVerificationToken } = useAuth()
+    const { verifyEmailInfo, handleEmailVerificationToken } = useAuth();
+
+    const [toast, setToast] = useState(null);
+    const [Loading, setLoading] = useState(false);
+
+    const { values, handleChange } = useForm({
+        otp: '',
+    });
+
+    const showToast = (success, message) => {
+        setToast({ success, message });
+    };
 
     useEffect(() => {
         if (!token) {
@@ -31,19 +42,27 @@ const VerifyOTP = () => {
         }
     }, [verifyEmailInfo, token, handleEmailVerificationToken, navigate]);
 
-    const { values, handleChange } = useForm({
-        otp: '',
-    });
-
-    const [toast, setToast] = useState(null);
-
-    const headleSubmit = (e) => {
+    const headleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
-        if (values.email === 'admin@demo.com' && values.password === '123456') {
-            setToast({ success: true, message: 'Login successful!' });
-        } else {
-            setToast({ success: false, message: 'Invalid credentials. Try again!' });
+        try {
+            const res = await API.post('/auth/verify-otp', values, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            if (res.data.success === true) {
+                showToast(true, res.data.message);
+                setTimeout(() => navigate('/update-password'), 2000);
+            } else {
+                showToast(false, res.data.message);
+            }
+        } catch (err) {
+            const message =
+                err.response?.data?.message || "Request failed. Please try again.";
+            showToast(false, message);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -55,13 +74,10 @@ const VerifyOTP = () => {
                     alt="ICT Center"
                     className="object-cover w-full h-full"
                 />
-
                 <div className="absolute inset-0 bg-black/70"></div>
-
                 <div className="absolute bottom-10 left-10 text-white">
                     <img src={uoplogo} alt="" className='h-16 w-auto' />
-
-                    <h2 className="text-3xl font-bold ">Information Technology Centre </h2>
+                    <h2 className="text-3xl font-bold">Information Technology Centre</h2>
                     <h1 className="text-2xl mb-2">University of Peradeniya</h1>
                     <p className="text-gray-200 max-w-sm">
                         Empowering innovation, technology, and learning excellence.
@@ -69,9 +85,7 @@ const VerifyOTP = () => {
                 </div>
             </div>
 
-
             <div className="flex flex-col justify-center items-center w-full md:w-1/2 px-8 py-16 bg-white">
-
                 <div className="absolute top-5 right-5 z-50">
                     {toast && (
                         <Toast
@@ -83,18 +97,18 @@ const VerifyOTP = () => {
                 </div>
 
                 <div className="w-full max-w-md">
-
                     <div className="md:hidden">
                         <center className='mb-4'>
                             <img src={uoplogo} alt="" className='h-16 w-auto' />
-                            <h2 className="font-bold ">Information Technology Centre </h2>
+                            <h2 className="font-bold">Information Technology Centre</h2>
                         </center>
                     </div>
+
                     <h1 className="text-4xl font-bold text-gray-800 text-center mb-2">
                         Verify One Time Password
                     </h1>
                     <p className="text-gray-500 text-center mb-8">
-                        Verify Your OTP Here (OTP already send to your email when you reqeustion Password Reset)
+                        Verify your OTP (sent to your email when you requested password reset)
                     </p>
 
                     <form onSubmit={headleSubmit}>
@@ -107,7 +121,11 @@ const VerifyOTP = () => {
                             placeholder="Enter your OTP"
                             required
                         />
-                        <DefaultButton label="Verify OTP" type="submit" />
+                        <DefaultButton
+                            type="submit"
+                            disabled={Loading}
+                            label={Loading ? "Verifying..." : "Verify OTP"}
+                        />
                     </form>
                 </div>
             </div>

@@ -4,40 +4,62 @@ import DefaultInput from '../../component/Form/DefaultInput';
 import DefaultButton from '../../component/Buttons/DefaultButton';
 import Toast from '../../component/Toast/Toast';
 import useForm from '../../hooks/useForm';
-import uoplogo from '../../assets/uoplogo.png'
+import uoplogo from '../../assets/uoplogo.png';
+import API from '../../services/api';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const ForgetPassword = () => {
+    const { handleEmailVerificationToken } = useAuth();
+    const navigate = useNavigate();
+    const [Loading, setLoading] = useState(false);
+    const [toast, setToast] = useState(null);
+
     const { values, handleChange } = useForm({
         email: '',
     });
 
-    const [toast, setToast] = useState(null);
+    const showToast = (success, message) => {
+        setToast({ success, message });
+    };
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
-        if (values.email === 'admin@demo.com' && values.password === '123456') {
-            setToast({ success: true, message: 'Login successful!' });
-        } else {
-            setToast({ success: false, message: 'Invalid credentials. Try again!' });
+        try {
+            const res = await API.post('/auth/forget-password', values);
+
+            if (res.data.success === true) {
+                handleEmailVerificationToken(res.data.token);
+                showToast(true, res.data.message);
+                setTimeout(() => navigate('/verify-otp'), 2000);
+            } else {
+                showToast(false, res.data.message);
+            }
+        } catch (err) {
+            const message =
+                err.response?.data?.message || "Request failed. Please try again.";
+            showToast(false, message);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div className="min-h-screen flex flex-col md:flex-row">
+            {/* Left side */}
             <div className="relative hidden md:flex md:w-1/2">
                 <img
                     src={ICTCenterImg}
                     alt="ICT Center"
                     className="object-cover w-full h-full"
                 />
-
                 <div className="absolute inset-0 bg-black/70"></div>
 
                 <div className="absolute bottom-10 left-10 text-white">
                     <img src={uoplogo} alt="" className='h-16 w-auto' />
-
-                    <h2 className="text-3xl font-bold ">Information Technology Centre </h2>
+                    <h2 className="text-3xl font-bold">Information Technology Centre</h2>
                     <h1 className="text-2xl mb-2">University of Peradeniya</h1>
                     <p className="text-gray-200 max-w-sm">
                         Empowering innovation, technology, and learning excellence.
@@ -45,9 +67,9 @@ const ForgetPassword = () => {
                 </div>
             </div>
 
-
+            {/* Right side */}
             <div className="flex flex-col justify-center items-center w-full md:w-1/2 px-8 py-16 bg-white">
-
+                {/* Toast Notification */}
                 <div className="absolute top-5 right-5 z-50">
                     {toast && (
                         <Toast
@@ -59,18 +81,19 @@ const ForgetPassword = () => {
                 </div>
 
                 <div className="w-full max-w-md">
-
+                    {/* UOP logo for mobile */}
                     <div className="md:hidden">
                         <center className='mb-4'>
                             <img src={uoplogo} alt="" className='h-16 w-auto' />
-                            <h2 className="font-bold ">Information Technology Centre </h2>
+                            <h2 className="font-bold">Information Technology Centre</h2>
                         </center>
                     </div>
+
                     <h1 className="text-4xl font-bold text-gray-800 text-center mb-2">
                         Forget Password
                     </h1>
                     <p className="text-gray-500 text-center mb-8">
-                        Enter Email Address to Reqeust Password Reset OTP
+                        Enter your email address to request a password reset OTP.
                     </p>
 
                     <form onSubmit={handleLogin}>
@@ -83,7 +106,11 @@ const ForgetPassword = () => {
                             placeholder="Enter your email"
                             required
                         />
-                        <DefaultButton label="Request Password Reset OTP" type="submit" />
+                        <DefaultButton
+                            type="submit"
+                            disabled={Loading}
+                            label={Loading ? "Sending OTP..." : "Request Password Reset OTP"}
+                        />
                     </form>
                 </div>
             </div>
