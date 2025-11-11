@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import defultImg from "../../assets/user.png";
-import uoplogo from "../../assets/uoplogo.png";
+import uoplogo from "../../assets/logo.png";
+import dashboardbg from "../../assets/uopict.jpg";
 import API from "../../services/api";
 import { useAuth } from "../../context/AuthContext";
-import { BiSolidDashboard } from "react-icons/bi";
-import { FaUser, FaNewspaper, FaQuestion } from "react-icons/fa";
-import { GrSchedules } from "react-icons/gr";
-import { IoPeople } from "react-icons/io5";
+import {
+    BiSolidDashboard,
+    BiTimeFive,
+    BiBarChartSquare,
+} from "react-icons/bi";
+import { FaUserGraduate, FaCog, FaQuestion } from "react-icons/fa";
 import { MdEvent, MdLogout } from "react-icons/md";
 import { FiBook } from "react-icons/fi";
 import { motion } from "framer-motion";
-import { Activity } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 
 const DashSide = ({ closeSidebar }) => {
     const { auth, logout } = useAuth();
     const navigate = useNavigate();
     const [MyProfileImage, setMyProfileImage] = useState([]);
     const [collapsed, setCollapsed] = useState(false);
+    const [openMenu, setOpenMenu] = useState(null);
     const token = localStorage.getItem("token");
 
     useEffect(() => {
@@ -42,117 +46,195 @@ const DashSide = ({ closeSidebar }) => {
         if (token) fetchMyProfileImage();
     }, [token]);
 
-    // Base navigation items
+    const toggleSubmenu = (index) => {
+        setOpenMenu(openMenu === index ? null : index);
+    };
+
     const navitem = [
-        { name: "Dashboard", icon: <BiSolidDashboard />, link: "/Dashboard" },
-        { name: "Users", icon: <FaUser />, link: "/Dashboard/manage-users" },
-        { name: "Appointment", icon: <GrSchedules />, link: "/Dashboard/manage-appointments" },
-        { name: "News & Event", icon: <FaNewspaper />, link: "/Dashboard/manage-news" },
-        { name: "WorkShop", icon: <MdEvent />, link: "/Dashboard/manage-workshop" },
-        { name: "Resources", icon: <FiBook />, link: "/Dashboard/manage-resource" },
-        { name: "FAQ", icon: <FaQuestion />, link: "/Dashboard/manage-faq" },
-        { name: "User Activities", icon: <Activity />, link: "/Dashboard/user-logs" },
+        {
+            name: "Dashboard",
+            icon: <BiSolidDashboard />,
+            link: "/Dashboard",
+        },
+        {
+            name: "Interns",
+            icon: <FaUserGraduate />,
+            submenu: [{ name: "Manage Interns", link: "/Dashboard/interns" }],
+        },
+        {
+            name: "Attendance",
+            icon: <BiTimeFive />,
+            submenu: [
+                { name: "Daily Attendance", link: "/Dashboard/daily" },
+                { name: "Attendance Summary", link: "/Dashboard/summary" },
+            ],
+        },
+        {
+            name: "Reports",
+            icon: <BiBarChartSquare />,
+            submenu: [
+                { name: "Attendance Reports", link: "/Dashboard/attendance" },
+                { name: "Performance Reports", link: "/Dashboard/performance" },
+                { name: "Monthly Overview", link: "/Dashboard/monthly" },
+            ],
+        },
+        {
+            name: "Meetings",
+            icon: <MdEvent />,
+            submenu: [
+                { name: "Manage Meetings", link: "/Dashboard/meeting" },
+                { name: "Create Meeting", link: "/Dashboard/create-meeting" },
+            ],
+        },
+        {
+            name: "Resources",
+            icon: <FiBook />,
+            link: "/Dashboard/resources",
+        },
+        {
+            name: "FAQ & Help",
+            icon: <FaQuestion />,
+            link: "/Dashboard/faq",
+        },
+        {
+            name: "Settings",
+            icon: <FaCog />,
+            submenu: [
+                { name: "Profile Settings", link: "/Dashboard/profile" },
+                { name: "System Configuration", link: "/Dashboard/system" },
+                { name: "User Activities", link: "/Dashboard/logs" },
+            ],
+        },
     ];
 
-    const filteredNavItems = auth?.role === "staff"
-        ? navitem.filter(
-            (item) => item.name !== "Users" && item.name !== "User Activities"
-        )
-        : navitem;
+    const filteredNavItems =
+        auth?.role === "staff"
+            ? navitem.filter((item) => item.name !== "Settings")
+            : navitem;
 
     return (
         <motion.aside
             initial={{ width: 300, opacity: 0 }}
             animate={{ width: collapsed ? 96 : 280, opacity: 1 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="relative h-full flex flex-col bg-gradient-to-b from-[#0f0f1a] via-[#161627] to-[#0d0d18] border-r border-purple-800/30 shadow-[0_0_30px_rgba(147,51,234,0.25)] overflow-hidden backdrop-blur-2xl"
+            className="relative h-full flex flex-col overflow-hidden bg-gradient-to-b from-white to-purple-50 shadow-lg"
         >
-            {/* Neon Glow Border */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute inset-0 bg-gradient-to-b from-fuchsia-600/20 to-purple-800/10 blur-3xl" />
-            </div>
-
             {/* Logo */}
-            <div className="flex flex-col items-center py-5 border-b border-purple-700/20">
+            <div className="flex items-center pb-4 pt-5 border-b border-purple-100">
                 <motion.img
                     src={uoplogo}
                     alt="UOP Logo"
-                    className="h-14 w-auto drop-shadow-[0_0_10px_rgba(255,0,255,0.4)]"
+                    className="h-10 w-auto ml-4 "
                     whileHover={{ scale: 1.1, rotate: 3 }}
                 />
                 {!collapsed && (
                     <motion.h1
                         initial={{ opacity: 0, y: 5 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-purple-300 mt-2 tracking-wider"
+                        className="ml-2 font-bold text-lg text-purple-600"
                     >
-                        PWAC
+                        Intern Attendance
                     </motion.h1>
                 )}
             </div>
 
-            {/* Profile */}
-            <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="px-5 py-6 border-b border-purple-800/20"
-            >
-                <div className="flex items-center gap-3">
-                    <div className="relative">
-                        <img
-                            src={
-                                MyProfileImage[0]?.profileimg
-                                    ? `${import.meta.env.VITE_APP_API_FILES}/uploads/${MyProfileImage[0].profileimg}`
-                                    : defultImg
-                            }
-                            alt="User"
-                            className="w-12 h-12 rounded-full border-2 border-fuchsia-500 shadow-[0_0_15px_rgba(255,0,255,0.4)] object-cover"
-                        />
-                        <span className="absolute bottom-0 right-0 block w-3 h-3 bg-green-400 rounded-full border border-gray-800" />
-                    </div>
-                    {!collapsed && (
-                        <div>
-                            <h2 className="text-sm font-semibold text-fuchsia-200">
-                                {auth.user?.username || "User"}
-                            </h2>
-                            <p className="text-xs text-purple-400 uppercase">{auth?.role}</p>
-                        </div>
-                    )}
-                </div>
-            </motion.div>
-
             {/* Navigation */}
             <nav className="flex-1 px-3 mt-4 space-y-1 overflow-y-auto custom-scrollbar">
+                <h1 className="uppercase font-bold text-gray-500 text-xs mb-4">
+                    main menu
+                </h1>
+
                 {filteredNavItems.map((item, index) => (
-                    <NavLink
-                        key={index}
-                        to={item.link}
-                        onClick={closeSidebar}
-                        className={({ isActive }) =>
-                            `group relative flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all duration-300 ${isActive
-                                ? "bg-gradient-to-r from-fuchsia-600 to-purple-700 text-white shadow-[0_0_15px_rgba(147,51,234,0.5)]"
-                                : "text-purple-300 hover:bg-white/10 hover:text-fuchsia-300"
-                            }`
-                        }
-                    >
-                        <motion.span
-                            whileHover={{ scale: 1.2, rotate: 5 }}
-                            className="text-xl"
-                        >
-                            {item.icon}
-                        </motion.span>
-                        {!collapsed && (
-                            <motion.span
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                className="text-sm tracking-wide"
+                    <div key={index}>
+                        {item.submenu ? (
+                            <>
+                                <button
+                                    onClick={() => toggleSubmenu(index)}
+                                    className={`group relative flex items-center justify-between w-full px-4 py-2 rounded-xl font-medium transition-all duration-300 ${openMenu === index
+                                        ? "text-purple-600 bg-purple-50 shadow-sm"
+                                        : "text-gray-600 hover:text-purple-600 hover:bg-purple-50"
+                                        }`}
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <motion.span
+                                            whileHover={{ scale: 1.15, rotate: 4 }}
+                                            className="text-xs"
+                                        >
+                                            {item.icon}
+                                        </motion.span>
+                                        {!collapsed && (
+                                            <motion.span
+                                                initial={{ opacity: 0, x: -10 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                className="text-sm tracking-wide"
+                                            >
+                                                {item.name}
+                                            </motion.span>
+                                        )}
+                                    </div>
+                                    {!collapsed && (
+                                        openMenu === index ? (
+                                            <ChevronDown className="w-4 h-4 text-purple-500" />
+                                        ) : (
+                                            <ChevronRight className="w-4 h-4 text-gray-400" />
+                                        )
+                                    )}
+                                </button>
+
+                                {!collapsed && openMenu === index && (
+                                    <motion.div
+                                        initial={{ opacity: 0, height: 0 }}
+                                        animate={{ opacity: 1, height: "auto" }}
+                                        transition={{ duration: 0.3 }}
+                                        className="ml-8 mt-1 space-y-1"
+                                    >
+                                        {item.submenu.map((sub, subIndex) => (
+                                            <NavLink
+                                                key={subIndex}
+                                                to={sub.link}
+                                                onClick={closeSidebar}
+                                                className={({ isActive }) =>
+                                                    `block px-3 py-1.5 rounded-lg text-sm transition-all duration-200 ${isActive
+                                                        ? "text-purple-600 font-semibold"
+                                                        : "text-gray-500 hover:text-purple-600"
+                                                    }`
+                                                }
+                                            >
+                                                {sub.name}
+                                            </NavLink>
+                                        ))}
+                                    </motion.div>
+                                )}
+                            </>
+                        ) : (
+                            <NavLink
+                                to={item.link}
+                                onClick={closeSidebar}
+                                className={({ isActive }) =>
+                                    `group relative flex items-center gap-3 px-4 py-2 rounded-xl font-medium transition-all duration-300 ${isActive
+                                        ? "text-purple-600"
+                                        : "text-gray-600 hover:text-purple-600 hover:ml-1"
+                                    }`
+                                }
                             >
-                                {item.name}
-                            </motion.span>
+                                <motion.span
+                                    whileHover={{ scale: 1.2, rotate: 5 }}
+                                    className="text-xs"
+                                >
+                                    {item.icon}
+                                </motion.span>
+                                {!collapsed && (
+                                    <motion.span
+                                        initial={{ opacity: 0, x: -10 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        className="text-sm tracking-wide"
+                                    >
+                                        {item.name}
+                                    </motion.span>
+                                )}
+                            </NavLink>
                         )}
-                        <span className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-20 group-hover:bg-gradient-to-r from-fuchsia-400 to-purple-500 blur-md transition-all duration-500" />
-                    </NavLink>
+                    </div>
                 ))}
 
                 {/* Logout */}
@@ -167,18 +249,50 @@ const DashSide = ({ closeSidebar }) => {
                 </motion.button>
             </nav>
 
+            {/* User Info & Decorative Section */}
+            {!collapsed && (
+                <div className="px-4 py-4 mt-4 border-t border-purple-100 bg-gradient-to-r from-purple-50 to-white relative overflow-hidden">
+                    {/* User Profile Card */}
+                    <div className="flex items-center gap-3 mb-3">
+                        <img
+                            src={MyProfileImage[0]?.url || defultImg}
+                            alt="User"
+                            className="w-10 h-10 rounded-full object-cover shadow-md"
+                        />
+                        <div className="flex flex-col">
+                            <span className="text-sm font-semibold text-gray-700">
+                                {auth?.name || "User"}
+                            </span>
+                            <span className="text-xs text-gray-500 capitalize">
+                                {auth?.role || "intern"}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Decorative Image / Accent */}
+                    <div className="relative rounded-xl overflow-hidden">
+                        <img
+                            src={dashboardbg}
+                            alt="Dashboard Decoration"
+                            className="w-full h-20 object-cover rounded-lg opacity-70 hover:opacity-90 transition"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-white/60 to-transparent"></div>
+                    </div>
+                </div>
+            )}
+
             {/* Footer */}
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="p-3 text-center text-[10px] text-purple-400 border-t border-purple-700/20"
+                className="p-3 text-center text-[10px] text-purple-400 border-t border-purple-100"
             >
                 {!collapsed && (
                     <>
-                        © {new Date().getFullYear()} UOP-PWAC
+                        © {new Date().getFullYear()} Intern Attendance Management System
                         <br />
-                        <span className="text-fuchsia-400 font-semibold">
-                            Psychological Well-being and Assessment Center
+                        <span className="text-fuchsia-500 font-semibold">
+                            ICT Center
                         </span>
                     </>
                 )}
