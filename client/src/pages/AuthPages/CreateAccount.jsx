@@ -4,15 +4,15 @@ import DefaultInput from '../../component/Form/DefaultInput';
 import DefaultButton from '../../component/Buttons/DefaultButton';
 import Toast from '../../component/Toast/Toast';
 import useForm from '../../hooks/useForm';
-import uoplogo from '../../assets/uoplogo.png'
+import uoplogo from '../../assets/uoplogo.png';
 import API from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const CreateAccount = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const { handleEmailVerificationToken } = useAuth();
-    const [ Loading, setLoading ] = useState()
+    const [Loading, setLoading] = useState(false);
 
     const { values, handleChange } = useForm({
         username: '',
@@ -20,11 +20,11 @@ const CreateAccount = () => {
         password: '',
     });
 
-
     const [toast, setToast] = useState(null);
 
     const headleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
 
         try {
             const res = await API.post('/auth/registation', values, {
@@ -32,16 +32,17 @@ const CreateAccount = () => {
             });
 
             if (res.data.success === true) {
-                setToast(true, res.data.message);
+                setToast({ success: true, message: res.data.message });
                 handleEmailVerificationToken(res.data.token);
-                setTimeout(() => navigate('/verify-email'), 2000);
+                setTimeout(() => navigate('/verify-account'), 2000);
             } else {
-                setToast(false, res.data.message);
+                setToast({ success: false, message: res.data.message });
             }
         } catch (err) {
-            const message =
-                err.response?.data?.message || "Request failed. Please try again.";
-            setToast(false, message);
+            setToast({
+                success: false,
+                message: err.response?.data?.message || "Something went wrong.",
+            });
         } finally {
             setLoading(false);
         }
@@ -49,19 +50,18 @@ const CreateAccount = () => {
 
     return (
         <div className="min-h-screen flex flex-col md:flex-row">
+            {/* Left side */}
             <div className="relative hidden md:flex md:w-1/2">
                 <img
                     src={ICTCenterImg}
                     alt="ICT Center"
                     className="object-cover w-full h-full"
                 />
-
                 <div className="absolute inset-0 bg-black/70"></div>
 
                 <div className="absolute bottom-10 left-10 text-white">
                     <img src={uoplogo} alt="" className='h-16 w-auto' />
-
-                    <h2 className="text-3xl font-bold ">Information Technology Centre </h2>
+                    <h2 className="text-3xl font-bold">Information Technology Centre</h2>
                     <h1 className="text-2xl mb-2">University of Peradeniya</h1>
                     <p className="text-gray-200 max-w-sm">
                         Empowering innovation, technology, and learning excellence.
@@ -69,9 +69,10 @@ const CreateAccount = () => {
                 </div>
             </div>
 
-
+            {/* Right side */}
             <div className="flex flex-col justify-center items-center w-full md:w-1/2 px-8 py-16 bg-white">
 
+                {/* Toast */}
                 <div className="absolute top-5 right-5 z-50">
                     {toast && (
                         <Toast
@@ -83,13 +84,13 @@ const CreateAccount = () => {
                 </div>
 
                 <div className="w-full max-w-md">
-
                     <div className="md:hidden">
                         <center className='mb-4'>
                             <img src={uoplogo} alt="" className='h-16 w-auto' />
-                            <h2 className="font-bold ">Information Technology Centre </h2>
+                            <h2 className="font-bold">Information Technology Centre</h2>
                         </center>
                     </div>
+
                     <h1 className="md:text-4xl font-bold text-gray-800 text-center mb-2">
                         Welcome to Attendance Management System
                     </h1>
@@ -128,13 +129,17 @@ const CreateAccount = () => {
                             required
                         />
 
-                        <DefaultButton label="Create New Account" type="submit" />
+                        <DefaultButton
+                            type="submit"
+                            disabled={Loading}
+                            label={Loading ? "Creating..." : "Create New Account"}
+                        />
                     </form>
 
                     <p className="text-center text-sm text-gray-600 mt-8">
                         Already have an account?{' '}
                         <a href="/" className="text-[#560606] font-semibold hover:underline">
-                            SignIn
+                            Sign In
                         </a>
                     </p>
                 </div>

@@ -35,7 +35,7 @@ class AuthService {
 
         const hashPass = await bcrypt.hash(password, PASSWORD_SULT)
 
-        const getstdrole = await Role.findOne({ name: 'user' })
+        const getstdrole = await Role.findOne({ name: 'intern' })
 
         const newUser = new User({
             username: username,
@@ -71,15 +71,15 @@ class AuthService {
 
         await sendEmail({
             to: email,
-            subject: "Welcome to Psychological Wellbeing & Assessment Center | Verify Your Email",
+            subject: "Welcome to Attendance Management System | ICT Center, University of Peradeniya",
             html: `
                 <div style="font-family: 'Segoe UI', Arial, sans-serif; background-color: #f7f7f7; padding: 40px 0;">
                     <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 14px; overflow: hidden; box-shadow: 0 10px 35px rgba(0,0,0,0.08);">
                         
                         <!-- Header -->
                         <div style="background: #560606; padding: 25px; text-align: center;">
-                            <h1 style="color: #fff; margin: 0; font-size: 28px; font-weight: 800;">Welcome to PWAC</h1>
-                            <p style="color: #ffd6d6; margin: 6px 0 0; font-size: 15px;">University of Peradeniya</p>
+                            <h1 style="color: #fff; margin: 0; font-size: 28px; font-weight: 800;">Welcome to Attendance Management System</h1>
+                            <p style="color: #ffd6d6; margin: 6px 0 0; font-size: 15px;">ICT Center, University of Peradeniya</p>
                         </div>
 
                         <!-- Body -->
@@ -87,7 +87,7 @@ class AuthService {
                             <h2 style="font-size: 22px; margin-bottom: 12px; color: #560606;">Hello ${username},</h2>
 
                             <p style="font-size: 16px; line-height: 1.6; margin-bottom: 20px; color: #4b5563;">
-                                You’ve successfully joined <strong>Psychological Wellbeing & Assessment Center</strong> — University of Peradeniya. 
+                                You’ve successfully registered to the <strong>Attendance Management System</strong> at ICT Center, University of Peradeniya. 
                                 Please verify your email using the OTP below:
                             </p>
 
@@ -106,19 +106,20 @@ class AuthService {
                             <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;"/>
 
                             <p style="font-size: 15px; color: #475569;">
-                                💚 Once verified, you can access our resources and services provided by the center.
+                                💚 Once verified, you can access the Attendance Management System and its resources.
                             </p>
                         </div>
 
                         <!-- Footer -->
                         <div style="background-color: #f9fafb; padding: 20px; text-align: center; font-size: 13px; color: #9ca3af;">
-                            <p style="margin: 5px 0;">© ${new Date().getFullYear()} Psychological Wellbeing & Assessment Center</p>
-                            <p style="margin: 0;">University of Peradeniya</p>
+                            <p style="margin: 5px 0;">© ${new Date().getFullYear()} Attendance Management System</p>
+                            <p style="margin: 0;">ICT Center, University of Peradeniya</p>
                         </div>
                     </div>
                 </div>
             `,
         });
+
 
 
 

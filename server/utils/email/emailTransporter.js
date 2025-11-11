@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 const sendEmail = async ({ to, subject, html, attachments }) => {
     try {
         const info = await transporter.sendMail({
-            from: `"UOP - PWAC" <${process.env.EMAIL_USER}>`,
+            from: `"ICT Center - UOP | Attendance System" <${process.env.EMAIL_USER}>`,
             to,
             subject,
             html,
