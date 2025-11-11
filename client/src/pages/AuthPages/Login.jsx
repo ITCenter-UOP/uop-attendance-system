@@ -38,16 +38,18 @@ const Login = () => {
                 const decoded = jwtDecode(res.data.token);
                 const role = decoded?.role;
 
-                if (role === "admin" || role === "staff") {
+                if (role === "admin" || role === "supervisor") {
                     setTimeout(() => navigate('/Dashboard'), 2000);
-                } else if (role === "user") {
+                } else if (role === "intern") {
                     setTimeout(() => navigate('/my-account'), 2000);
+                } else if (role === "developer") {
+                    setTimeout(() => navigate('/developer-dashboard'), 2000);
                 } else {
                     setTimeout(() => navigate('/'), 2000);
                 }
             } else {
                 setToast({ success: false, message: res.data.message });
-                return; 
+                return;
             }
         } catch (err) {
             const message =
