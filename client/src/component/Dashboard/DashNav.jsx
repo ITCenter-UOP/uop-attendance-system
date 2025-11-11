@@ -61,7 +61,7 @@ const DashNav = () => {
             initial={{ y: -10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="w-full border-b border-gray-200 bg-white"
+            className="w-full border-b border-gray-100 bg-white"
         >
             <div className="flex items-center justify-between px-4 lg:px-8 h-14">
                 {/* Left Section */}

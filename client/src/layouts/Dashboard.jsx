@@ -16,7 +16,7 @@ const Dashboard = () => {
             {/* Sidebar */}
             <aside
                 className={`
-                    fixed top-0 left-0 h-screen w-64 z-30 bg-white shadow-md transform transition-transform duration-300 ease-in-out
+                    fixed top-0 left-0 h-screen w-64 z-30 bg-white border-r border-gray-100 transform transition-transform duration-300 ease-in-out
                     ${openside ? 'translate-x-0' : '-translate-x-full'}
                     xl:translate-x-0 xl:static xl:flex
                 `}
@@ -48,13 +48,15 @@ const Dashboard = () => {
             {/* Main content area */}
             <div className="flex-1 flex flex-col h-screen ml-0 ">
                 {/* Fixed Top Nav */}
-                <header className="fixed top-0 left-0 xl:left-64 w-full xl:w-[calc(100%-16rem)] z-20 bg-white shadow">
+                <header className="fixed top-0 left-0 xl:left-64 w-full xl:w-[calc(100%-16rem)] z-20 bg-white">
                     <DashNav />
                 </header>
 
                 {/* Scrollable Content */}
-                <div className="pt-16 px-4 pb-4 bg-[#f8f9fa] overflow-y-auto flex-1 mt-8">
-                    <Outlet />
+                <div className="pt-10 pb-4 bg-[#f8f9fa] overflow-y-auto flex-1 mt-8">
+                    <div className="ml-4">
+                        <Outlet />
+                    </div>
 
                     {/* Footer that scrolls with content */}
                     <footer className="mt-4">

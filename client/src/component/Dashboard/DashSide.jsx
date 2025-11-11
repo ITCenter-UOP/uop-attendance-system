@@ -117,7 +117,7 @@ const DashSide = ({ closeSidebar }) => {
             initial={{ width: 300, opacity: 0 }}
             animate={{ width: collapsed ? 96 : 280, opacity: 1 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="relative h-full flex flex-col overflow-hidden bg-gradient-to-b from-white to-purple-50 shadow-lg"
+            className="relative h-full flex flex-col overflow-hidden bg-gradient-to-b from-white to-purple-50"
         >
             {/* Logo */}
             <div className="flex items-center pb-4 pt-5 ">
