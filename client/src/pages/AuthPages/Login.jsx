@@ -5,8 +5,11 @@ import DefaultButton from '../../component/Buttons/DefaultButton';
 import Toast from '../../component/Toast/Toast';
 import useForm from '../../hooks/useForm';
 import uoplogo from '../../assets/uoplogo.png'
+import { useAuth } from '../../context/AuthContext';
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
+    const { login } = useAuth();
     const { values, handleChange } = useForm({
         email: '',
         password: '',
@@ -14,13 +17,38 @@ const Login = () => {
 
     const [toast, setToast] = useState(null);
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
 
-        if (values.email === 'admin@demo.com' && values.password === '123456') {
-            setToast({ success: true, message: 'Login successful!' });
-        } else {
-            setToast({ success: false, message: 'Invalid credentials. Try again!' });
+        try {
+            const res = await API.post('/auth/login', values, {
+                headers: { "Content-Type": "application/json" },
+            });
+
+            if (res.data.success === true) {
+                showToast(true, res.data.message);
+                login(res.data.token);
+                const decoded = jwtDecode(res.data.token);
+                const role = decoded?.role;
+
+                if (role === "admin" || role === "staff") {
+                    setTimeout(() => navigate('/Dashboard'), 2000);
+                } else if (role === "user") {
+                    setTimeout(() => navigate('/my-account'), 2000);
+                } else {
+                    setTimeout(() => navigate('/'), 2000);
+                }
+            } else {
+                showToast(false, res.data.message);
+            }
+        }
+        catch (err) {
+            const message =
+                err.response?.data?.message || "Request failed. Please try again.";
+            console.log("Axios Error:", err.response || err.message);
+            showToast(false, message);
+        } finally {
+            setLoading(false);
         }
     };
 
