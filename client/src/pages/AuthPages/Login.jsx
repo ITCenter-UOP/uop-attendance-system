@@ -7,9 +7,12 @@ import useForm from '../../hooks/useForm';
 import uoplogo from '../../assets/uoplogo.png'
 import { useAuth } from '../../context/AuthContext';
 import { jwtDecode } from "jwt-decode";
+import API from '../../services/api'
 
 const Login = () => {
     const { login } = useAuth();
+    const [Loading, setLoading] = useState()
+   
     const { values, handleChange } = useForm({
         email: '',
         password: '',
