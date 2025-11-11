@@ -12,6 +12,7 @@ import {
     TrendingUp,
     ClipboardList,
 } from "lucide-react";
+import SecPartDash from "./SecPartDash";
 
 const DashHome = () => {
     const { auth } = useAuth();
@@ -149,6 +150,9 @@ const DashHome = () => {
                         <p className="text-sm text-gray-500 mt-1">{card.title}</p>
                     </motion.div>
                 ))}
+            </div>
+            <div className="mt-8">
+                <SecPartDash />
             </div>
         </div>
     );
