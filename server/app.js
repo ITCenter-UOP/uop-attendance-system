@@ -18,6 +18,9 @@ require("dotenv").config();
 // Example: const authRoute = require("./routes/authRoute");
 
 const authRoute = require("./routes/auth.route")
+const roleRoute = require("./routes/role.route")
+
+
 // ---------------------- END of Importing Routes
 
 const app = express();
