@@ -120,7 +120,7 @@ const DashSide = ({ closeSidebar }) => {
             className="relative h-full flex flex-col overflow-hidden bg-gradient-to-b from-white to-purple-50 shadow-lg"
         >
             {/* Logo */}
-            <div className="flex items-center pb-4 pt-5 border-b border-purple-100">
+            <div className="flex items-center pb-4 pt-5 ">
                 <motion.img
                     src={uoplogo}
                     alt="UOP Logo"

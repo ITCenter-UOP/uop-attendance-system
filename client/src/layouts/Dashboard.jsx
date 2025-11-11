@@ -53,7 +53,7 @@ const Dashboard = () => {
                 </header>
 
                 {/* Scrollable Content */}
-                <div className="pt-16 px-4 pb-4 overflow-y-auto flex-1 mt-8">
+                <div className="pt-16 px-4 pb-4 bg-[#f8f9fa] overflow-y-auto flex-1 mt-8">
                     <Outlet />
 
                     {/* Footer that scrolls with content */}

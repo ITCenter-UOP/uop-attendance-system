@@ -1,32 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-    Menu,
-    Search,
-    Bell,
-    MessageCircle,
-    ChevronDown,
-    User,
-    Settings,
-    LogOut,
-} from "lucide-react";
+    FiArrowLeft,
+    FiSearch,
+    FiGrid,
+    FiSettings,
+    FiBell,
+    FiMail,
+} from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
 import defultUser from "../../assets/user.png";
 import { useAuth } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
 import API from "../../services/api";
-import { motion, AnimatePresence } from "framer-motion";
 
-const DashNav = ({ onMenuClick }) => {
+const DashNav = () => {
     const { auth, logout } = useAuth();
-    const [open, setOpen] = useState(false);
-    const dropdownRef = useRef(null);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
     const [MyProfileImage, setMyProfileImage] = useState([]);
+    const dropdownRef = useRef(null);
     const token = localStorage.getItem("token");
 
     // Close dropdown on outside click
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setOpen(false);
+                setDropdownOpen(false);
             }
         };
         document.addEventListener("mousedown", handleClickOutside);
@@ -51,126 +49,121 @@ const DashNav = ({ onMenuClick }) => {
                 setMyProfileImage(
                     Array.isArray(res.data.result) ? res.data.result : [res.data.result]
                 );
-            } catch (err) {
-                console.error("Failed to fetch roles:", err);
+            } catch {
                 setMyProfileImage([]);
             }
         };
-
         fetchmyprofileimage();
     }, [token]);
 
     return (
         <motion.header
-            initial={{ y: -20, opacity: 0 }}
+            initial={{ y: -10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="sticky top-0 z-50 border-b border-purple-700/30 bg-gradient-to-r from-[#0d0d18]/70 via-[#141428]/70 to-[#0d0d18]/70 backdrop-blur-2xl shadow-[0_0_25px_rgba(147,51,234,0.25)]"
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="w-full border-b border-gray-200 bg-white"
         >
-            <div className="flex items-center justify-between px-4 py-3 lg:px-6">
+            <div className="flex items-center justify-between px-4 lg:px-8 h-14">
                 {/* Left Section */}
-                <div className="flex items-center gap-4">
-                    {/* Search Bar */}
-                    <div className="hidden md:flex items-center bg-gradient-to-r from-[#1a1a2b] to-[#131324] border border-fuchsia-800/40 rounded-full px-3 py-2 w-80 shadow-inner focus-within:shadow-[0_0_10px_rgba(255,0,255,0.3)] transition">
-                        <Search className="text-fuchsia-400 w-5 h-5 mr-2" />
+                <div className="flex items-center gap-3">
+                    <div className="relative w-64">
+                        <FiSearch className="absolute left-3 top-2.5 text-gray-400 text-sm" />
                         <input
                             type="text"
-                            placeholder="Search..."
-                            className="bg-transparent focus:outline-none w-full text-sm text-fuchsia-100 placeholder-fuchsia-500/60"
+                            placeholder="Search"
+                            className="w-full border border-gray-300 text-sm rounded-md pl-8 pr-8 py-1.5 focus:outline-none focus:ring-1 focus:ring-gray-300"
                         />
+                        <div className="absolute right-2 top-1.5 text-[10px] text-gray-400 border border-gray-300 px-1.5 rounded">
+                            CTRL + /
+                        </div>
                     </div>
                 </div>
 
+                {/* Middle Section */}
+                <div className="hidden md:flex items-center gap-4 text-gray-500">
+                    <button className="hover:text-gray-700">
+                        <FiGrid className="text-lg" />
+                    </button>
+                    <button className="hover:text-gray-700">
+                        <FiSettings className="text-lg" />
+                    </button>
+                </div>
+
                 {/* Right Section */}
-                <div className="flex items-center gap-6">
-                    {/* Notification */}
-                    <Link to={"/Dashboard/notifications"}>
-                        <motion.button
-                            whileHover={{ scale: 1.15 }}
-                            className="relative text-fuchsia-400 hover:text-fuchsia-200 transition"
+                <div className="flex items-center gap-4 relative" ref={dropdownRef}>
+                    <button className="text-gray-500 hover:text-gray-700">
+                        <FiMail className="text-lg" />
+                    </button>
+                    <button className="text-gray-500 hover:text-gray-700">
+                        <FiBell className="text-lg" />
+                    </button>
+
+                    {/* Profile Dropdown */}
+                    <div className="relative">
+                        <button
+                            onClick={() => setDropdownOpen(!dropdownOpen)}
+                            className="w-8 h-8 rounded-full overflow-hidden "
                         >
-                            <Bell className="w-6 h-6" />
-                            <span className="absolute -top-1 -right-1 bg-fuchsia-600 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-lg">
-                                3
-                            </span>
-                        </motion.button>
-                    </Link>
-
-                    {/* Messages */}
-                    <motion.button
-                        whileHover={{ scale: 1.15 }}
-                        className="relative text-fuchsia-400 hover:text-fuchsia-200 transition"
-                    >
-                        <MessageCircle className="w-6 h-6" />
-                        <span className="absolute -top-1 -right-1 bg-purple-600 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-lg">
-                            5
-                        </span>
-                    </motion.button>
-
-                    {/* User Dropdown */}
-                    <div className="relative" ref={dropdownRef}>
-                        <motion.button
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => setOpen(!open)}
-                            className="flex items-center gap-3 rounded-full bg-[#1a1a2b]/60 hover:bg-[#22223a]/60 px-2 py-1 transition border border-fuchsia-800/40"
-                        >
-                            <div className="relative">
-                                <img
-                                    src={
-                                        MyProfileImage[0]?.profileimg
-                                            ? `${import.meta.env.VITE_APP_API_FILES}/uploads/${MyProfileImage[0].profileimg}`
-                                            : defultUser
-                                    }
-                                    alt="User"
-                                    className="h-10 w-10 rounded-full border-2 border-fuchsia-500 object-cover shadow-[0_0_10px_rgba(255,0,255,0.4)]"
-                                />
-                                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-400 border border-[#141428] rounded-full" />
-                            </div>
-
-                            <div className="hidden sm:block text-left leading-tight">
-                                <p className="text-fuchsia-200 font-bold text-sm tracking-wide">
-                                    {auth?.user?.username || "User"}
-                                </p>
-                                <p className="text-[10px] text-purple-400 uppercase">
-                                    {auth?.role}
-                                </p>
-                            </div>
-
-                            <ChevronDown
-                                className={`w-4 h-4 text-fuchsia-400 transition-transform duration-300 ${open ? "rotate-180" : ""
-                                    }`}
+                            <img
+                                src={
+                                    MyProfileImage[0]?.profileimg
+                                        ? `${import.meta.env.VITE_APP_API_FILES}/uploads/${MyProfileImage[0].profileimg}`
+                                        : defultUser
+                                }
+                                alt="Profile"
+                                className="w-full h-full object-cover"
                             />
-                        </motion.button>
+                        </button>
 
-                        {/* Dropdown Menu */}
                         <AnimatePresence>
-                            {open && (
+                            {dropdownOpen && (
                                 <motion.div
-                                    initial={{ opacity: 0, y: -10 }}
+                                    initial={{ opacity: 0, y: -5 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -10 }}
+                                    exit={{ opacity: 0, y: -5 }}
                                     transition={{ duration: 0.2 }}
-                                    className="absolute right-0 mt-3 w-52 bg-gradient-to-b from-[#1b1b2e]/95 to-[#141428]/95 border border-fuchsia-800/40 rounded-xl shadow-[0_0_15px_rgba(147,51,234,0.3)] overflow-hidden backdrop-blur-xl"
+                                    className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg py-3"
                                 >
-                                    <ul className="py-2 text-sm text-fuchsia-100">
+                                    <div className="flex items-center gap-3 px-4 pb-3">
+                                        <img
+                                            src={
+                                                MyProfileImage[0]?.profileimg
+                                                    ? `${import.meta.env.VITE_APP_API_FILES}/uploads/${MyProfileImage[0].profileimg}`
+                                                    : defultUser
+                                            }
+                                            alt="User"
+                                            className="w-10 h-10 rounded-full "
+                                        />
+                                        <div>
+                                            <p className="text-sm font-medium text-gray-800">
+                                                {auth?.username || "User"}
+                                            </p>
+                                            <p className="text-xs text-gray-500">
+                                                {auth?.email || "user@email.com"}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <ul className="py-1 text-sm text-gray-600">
                                         <li>
-                                            <Link to={"/Dashboard/my-profile"}>
-                                                <button className="flex items-center w-full px-4 py-2 hover:bg-fuchsia-500/20 transition">
-                                                    <User className="w-4 h-4 mr-2" /> Profile
-                                                </button>
+                                            <Link
+                                                to="/Dashboard/my-profile"
+                                                className="block px-4 py-2 hover:bg-gray-50 transition"
+                                            >
+                                                My Profile
                                             </Link>
                                         </li>
                                         <li>
-                                            <button className="flex items-center w-full px-4 py-2 hover:bg-fuchsia-500/20 transition">
-                                                <Settings className="w-4 h-4 mr-2" /> Settings
+                                            <button className="w-full text-left px-4 py-2 hover:bg-gray-50 transition">
+                                                Settings
                                             </button>
                                         </li>
                                         <li>
                                             <button
                                                 onClick={logout}
-                                                className="flex items-center w-full px-4 py-2 hover:bg-red-500/30 transition text-red-400"
+                                                className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-50 transition"
                                             >
-                                                <LogOut className="w-4 h-4 mr-2" /> Logout
+                                                Logout
                                             </button>
                                         </li>
                                     </ul>
